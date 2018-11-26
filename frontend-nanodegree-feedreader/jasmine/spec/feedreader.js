@@ -70,30 +70,29 @@ $(function() {
 
         // Checks if it completes its work
         it('completes work', function() {
-            const entry = document.querySelector('.entry');
-            expect(entry.innerText.length > 0).toBe(true);
+            const entry = document.querySelectorAll('.feed .entry');
+            expect(entry.length > 0).toBe(true);
         });
 
     })
 
     describe('New Feed Selection', function() {
-        const feed = document.querySelector('.feed');
-        const firstFeed = [];
         beforeEach(function(done) {
             loadFeed(0, function() {
-                Array.from(feed.children).forEach(function(entry) {
-                    firstFeed.push(entry.innerText);
+                let entry = document.querySelector('.feed .entry');
+                oldFeed = entry.innerHTML;
+                loadFeed(1, function() {
+                    entry = document.querySelector('.feed .entry');
+                    newFeed = entry.innerHTML;
+                    done();
                 });
             });
-            
-            loadFeed(1, done);
         });
-        // Checks for content change
-        it('content changes', function() {
-            Array.from(feed.children).forEach(function(entry, index) {
-                console.log(entry.innerText, firstFeed[index], entry.innerText === firstFeed[index]);
-                expect(entry.innerText === firstFeed[index]).toBe(false);
-            });
-        })
-    })
-}());
+    
+    // Checks for content change
+
+    it('content changes', function() {
+        expect(oldFeed === newFeed).toBe(false);
+        });
+    });
+});
